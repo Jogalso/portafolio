@@ -5,7 +5,7 @@ export default async function (req, res) {
     host: "smtp.gmail.com",
     auth: {
       user: process.env.emailDelQueEnviamos,
-      pass: process.env.contraseña,
+      pass: process.env.contrasenya,
     },
     secure: true,
   })

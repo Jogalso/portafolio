@@ -1,12 +1,11 @@
-import { useState } from "react"
-export const useSendMailContact = ({ req, res }) => {
+export default async function (req, res) {
   let mailer = require("nodemailer")
   const transporter = mailer.createTransport({
     port: 465,
     host: "smtp.gmail.com",
     auth: {
       user: process.env.emailDelQueEnviamos,
-      pass: process.env.contraseña,
+      pass: process.env.contrasenya,
     },
     secure: true,
   })
@@ -18,16 +17,12 @@ export const useSendMailContact = ({ req, res }) => {
     text: `Contacta  ${req.body.nombre}, con el motivo: ${req.body.motivo}, solicita informacion al email: ${req.body.email} o al telefono ${req.body.telefono}`,
   }
 
-  return new Promise((resolve, reject) => {
-    transporter
-      .sendMail(mailData)
-      .then((res) => {
-        res.status(200)
-        resolve()
-      })
-      .catch((error) => {
-        res.status(400)
-        resolve()
-      })
+  transporter.sendMail(mailData, (err, info) => {
+    if (err) {
+      console.log("error: ", err)
+    } else {
+      // console.log("Informacion del envio: ", info)
+      res.status(200)
+    }
   })
 }
